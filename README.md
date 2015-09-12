@@ -1,6 +1,6 @@
 # About
 
-This is a fork of the [perlweb](https://github.com/perlorg/perlweb) project, aimed at dockerizing the perl.org sites. 
+This is a fork of the [perlweb](https://github.com/perlorg/perlweb) project to test the development of the sites in docker. 
 
 ## Build docker image & Run docker container
 ```sh
