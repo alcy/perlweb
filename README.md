@@ -1,72 +1,25 @@
-# perlweb
+# About
 
-Code for various perl.org sites hosted in the main perl.org infrastructure.
+This is a fork of the (https://github.com/perlorg/perlweb)[perlweb] project, aimed at dockerizing the perl.org sites. 
 
-## Clone the source
-
+## Build docker image & Run docker container
 ```sh
-   git clone git://github.com/perlorg/perlweb.git
+   git clone https://github.com/alcy/perlweb.git
    cd perlweb
    git submodule update --init
+   docker build -t 'perlweb' .
+   docker run -p 8230:8230 -v `pwd`:/perlweb perlweb
 ```
 
-## Install dependencies
-
-If you have Dist::Zilla and App::cpanminus installed you can just run:
-
-   `((cd combust; dzil listdeps); dzil listdeps) | sort -u | cpanm`
-
-## Configure combust.conf
-
-The application expects a file called `combust.conf` to exist in the
-root directory.  You can start with the `combust.conf.sample` file and
-then add
-
+## Test
+Add the sites as /etc/hosts entries like (replace the ip address with wherever you are running this currently): 
 ```
-[cpanratings]
-servername = cpanratings.local
-
-[www]
-servername = wwwperl.local
-
+192.168.0.110   wwwperl.local wwwcom.local wwwcombust.local wwwdbi.local wwwdebugger.local wwwdev.local wwwlearn.local wwwlists.local wwwnoc.local wwwperl4lib.local wwwqa.local
 ```
+http:///wwwperl.local:8230 should show perl.org site, ditto for other sites above. 
 
-... etc.  Add wwwperl.local and cpanratings.local to your /etc/hosts
-file so they point to 127.0.0.1.
-
-## Database setup
-
-For some sites you also need to configure a (MySQL) database server.
-Setup the `[database-combust]` section in the `combust.conf` file and add a section for cpanratings like:
-
-```
-[database-cpanratings]
-alias = combust
-```
-
-Then run:
-
-```sh
-   export CBROOTLOCAL=`pwd`
-   export CBROOT=$CBROOTLOCAL/combust
-   ./combust/bin/database_update combust
-   ./combust/bin/database_update cpanratings
-```
-
-To setup the database schemas.  When the schemas change, you can run
-the `database_update` command again to get updated.
-
-## Start httpd
-
-```sh
-   export CBROOTLOCAL=`pwd`
-   export CBROOT=$CBROOTLOCAL/combust
-   ./combust/bin/httpd
-```
-
-You should now be able to access http://wwwperl.local:8225/
+## TODO
+- test cpanratings site
+- host the docker image 
 
 
-## Copyright
-
-`perlweb` is Copyright 2003-2012 Ask Bjørn Hansen.  See the LICENSE file.
