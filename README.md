@@ -1,6 +1,6 @@
 # About
 
-This is a fork of the (https://github.com/perlorg/perlweb)[perlweb] project, aimed at dockerizing the perl.org sites. 
+This is a fork of the [perlweb](https://github.com/perlorg/perlweb) project, aimed at dockerizing the perl.org sites. 
 
 ## Build docker image & Run docker container
 ```sh
@@ -12,11 +12,11 @@ This is a fork of the (https://github.com/perlorg/perlweb)[perlweb] project, aim
 ```
 
 ## Test
-Add the sites as /etc/hosts entries like (replace the ip address with wherever you are running this currently): 
+Add the /etc/hosts entries for the sites like (replace the ip address with wherever you are running this currently): 
 ```
 192.168.0.110   wwwperl.local wwwcom.local wwwcombust.local wwwdbi.local wwwdebugger.local wwwdev.local wwwlearn.local wwwlists.local wwwnoc.local wwwperl4lib.local wwwqa.local
 ```
-http:///wwwperl.local:8230 should show perl.org site, ditto for other sites above. 
+http://wwwperl.local:8230 should show the perl.org site. Other sites are configured the same way. 
 
 ## TODO
 - test cpanratings site
