@@ -9,15 +9,15 @@ RUN yum -y install perl cronolog which git tar bzip2 gcc \
 # Install perl -5.22.0
 ENV PERLBREW_ROOT /perl5
 RUN curl -L http://install.perlbrew.pl | bash
-RUN /perl5/bin/perlbrew init
-RUN /perl5/bin/perlbrew install -j 4 perl-5.22.0; perlbrew clean; rm -fr /perl5/perls/perl-*/man
-RUN /perl5/bin/perlbrew install-cpanm
-RUN /perl5/bin/perlbrew switch perl-5.22.0
-ENV PATH /perl5/bin:/perl5/perls/perl-5.22.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV PERLBREW_PERL perl-5.22.0
-ENV PERLBREW_MANPATH /perl5/perls/perl-5.22.0/man
-ENV PERLBREW_PATH /perl5/bin:/perl5/perls/perl-5.22.0/bin
-ENV PERLBREW_SKIP_INIT 1
+ENV PATH /perl5/bin:/perl5/perls/${PERLBREW_PERL}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PERLBREW_MANPATH /perl5/perls/${PERLBREW_PERL}/man
+ENV PERLBREW_PATH /perl5/bin:/perl5/perls/${PERLBREW_PERL}/bin
+RUN /perl5/bin/perlbrew init
+RUN /perl5/bin/perlbrew install -j 4 ${PERLBREW_PERL}; perlbrew clean; rm -fr /perl5/perls/perl-*/man
+RUN /perl5/bin/perlbrew install-cpanm
+RUN /perl5/bin/perlbrew switch ${PERLBREW_PERL}
+ENV PERLBREW_SKIP_INIT=1
 
 # Install required CPAN modules
 ADD modules /tmp/.modules
@@ -26,6 +26,9 @@ RUN cpanm -n < /tmp/.modules
 # Remove dev packages
 RUN rpm -e gcc cpp ppl cloog-ppl
 RUN rpm -qa --queryformat '%{NAME}\n' | grep -- '-devel$' | xargs rpm -e  
+
+# Add the perlweb user
+RUN groupadd -r perlweb && useradd -r -g perlweb perlweb
 
 # Set Combust environment 
 ENV CBROOTLOCAL /perlweb/
@@ -36,5 +39,9 @@ ENV CBCONFIG /perlweb/combust.docker.conf
 VOLUME /perlweb
 WORKDIR /perlweb
 
+# Expose port 8230
 EXPOSE 8230
+
+# Change to perlweb user
+USER perlweb
 ENTRYPOINT ["combust/bin/httpd"]
