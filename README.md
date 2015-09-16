@@ -5,6 +5,7 @@ This is a fork of the [perlweb](https://github.com/perlorg/perlweb) project to t
 ## Build docker image & Run docker container
 ```sh
    git clone https://github.com/alcy/perlweb.git
+   chmod a+w perlweb perlweb/docs/static # so that we run as a non-root user inside the container
    cd perlweb
    git submodule update --init
    docker build -t 'perlweb' .

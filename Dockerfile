@@ -25,23 +25,24 @@ RUN cpanm -n < /tmp/.modules
 
 # Remove dev packages
 RUN rpm -e gcc cpp ppl cloog-ppl
-RUN rpm -qa --queryformat '%{NAME}\n' | grep -- '-devel$' | xargs rpm -e  
+RUN rpm -qa --queryformat '%{NAME}\n' | grep -- '-devel$' | xargs rpm -e
 
 # Add the perlweb user
-RUN groupadd -r perlweb && useradd -r -g perlweb perlweb
+RUN groupadd pw && useradd -g pw pw
 
 # Set Combust environment 
-ENV CBROOTLOCAL /perlweb/
-ENV CBROOT /perlweb/combust
-ENV CBCONFIG /perlweb/combust.docker.conf
+ENV CBROOTLOCAL /home/pw/perlweb
+ENV CBROOT /home/pw/perlweb/combust
+ENV CBCONFIG /home/pw/perlweb/combust.docker.conf
 
-# Mount the code base on /
-VOLUME /perlweb
-WORKDIR /perlweb
+# Mount the code base on /home/pw
+VOLUME /home/pw/perlweb
+WORKDIR /home/pw/perlweb
 
 # Expose port 8230
 EXPOSE 8230
 
 # Change to perlweb user
-USER perlweb
+USER pw
 ENTRYPOINT ["combust/bin/httpd"]
+
