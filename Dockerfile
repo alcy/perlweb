@@ -17,7 +17,7 @@ RUN /perl5/bin/perlbrew init
 RUN /perl5/bin/perlbrew install -j 4 ${PERLBREW_PERL}; perlbrew clean; rm -fr /perl5/perls/perl-*/man
 RUN /perl5/bin/perlbrew install-cpanm
 RUN /perl5/bin/perlbrew switch ${PERLBREW_PERL}
-ENV PERLBREW_SKIP_INIT=1
+ENV PERLBREW_SKIP_INIT 1
 
 # Install required CPAN modules
 ADD modules /tmp/.modules
