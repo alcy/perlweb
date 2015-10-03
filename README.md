@@ -9,7 +9,7 @@ This is a fork of the [perlweb](https://github.com/perlorg/perlweb) project to t
    cd perlweb
    git submodule update --init
    docker build -t 'perlweb' .
-   docker run -p 8230:8230 -v `pwd`:/perlweb perlweb
+   docker-compose up -d perlweb
 ```
 
 ## Test
